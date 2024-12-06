@@ -6,9 +6,9 @@ but they can be used for a wide range of applications as a 3DCG process for tubu
 
 ## 環境や使用しているツールなど
 * Windows10 or higher
- * visual studio 2022
-  *.NET Framework 4.8
-  *KitwareVTK
+    * visual studio 2022
+        * .NET Framework 4.8
+        * KitwareVTK
 
 ### あると便利なもの
 * meshmixer (stlファイルをすぐ開くため)
