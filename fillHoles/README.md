@@ -19,4 +19,4 @@ https://examples.vtk.org/site/PythonicAPI/Meshes/FillHoles/   <br>
 ## fillHoles_vascular
 ![b](../assets/b.png)
 <br>
-ICEM CFD でテトラ-プリズム複合メッシュを作成した結果が下の図。外側メッシュ(=プリズムメッシュ)が歪んでいる。反対側の端面はきれいにメッシュが切れた。OpenFOAMで計算が実行でき、おかしくない結果が出たので、ひとまずよしとする。ICEM CFD で作成したこのメッシュファイルはassetsにある。
+ICEM CFD でテトラ-プリズム複合メッシュを作成した結果が下の図。外側メッシュ(=プリズムメッシュ)が歪んでいる。反対側の端面はきれいにメッシュが切れた。OpenFOAMで計算が実行でき、gmshでメッシュを作成した場合と比較して似たような計算結果が出たので、ひとまずよしとする。ICEM CFD で作成したこのメッシュファイルはassetsにある。
