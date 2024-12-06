@@ -16,3 +16,4 @@ https://examples.vtk.org/site/PythonicAPI/Meshes/FillHoles/   <br>
 ![a](../assets/a.gif)
 
 ## fillHoles_vascular
+![b](../assets/b.png)
