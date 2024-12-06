@@ -7,9 +7,12 @@
 
 # 参考
 https://examples.vtk.org/site/PythonicAPI/Meshes/FillHoles/   <br>
-上記サイトを参考にしている。tutorial フォルダでは、上記のサンプルコードの動作確認をしている。
+上記サイトを参考にしている。tutorial フォルダでは、上記のサンプルコードの動作確認をしている。下のように、穴の開いた球体の穴が三角形パッチで埋められている。<br>
+閉じたい領域が単純な形状なら、境界線上のNode数が多くてもfillHoles処理で埋めることができる。
 
 <br>
 
+## tutorial
 ![a](../assets/a.gif)
 
+## fillHoles_vascular
