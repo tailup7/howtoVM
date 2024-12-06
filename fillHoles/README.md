@@ -6,6 +6,9 @@
 セグメンテーションした血管形状のうち、一部を切り出して使う場合はmeshmixicerで切り出す際に端面は塞いでくれるが、セグメンテーションした形状すべてを流体解析したい場合や、自身で3DCGソフトウェアを使ってチューブ形状を作成した場合など、両端が穴が開いている形状に対してICEMでメッシュを切りたいときは、端面を埋める処理が必要になる。
 
 # 参考
-https://examples.vtk.org/site/PythonicAPI/Meshes/FillHoles/
+https://examples.vtk.org/site/PythonicAPI/Meshes/FillHoles/   <br>
 上記サイトを参考にしている。tutorial フォルダでは、上記のサンプルコードの動作確認をしている。
+
+<br>
+![Form1-2024-12-06-13-33-31](https://github.com/user-attachments/assets/3e666008-9e30-4358-b578-e78873938c7a)
 
