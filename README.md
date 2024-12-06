@@ -5,6 +5,7 @@ This repository is intended to keep a memorandum of the work that was required i
 but they can be used for a wide range of applications as a 3DCG process for tubular geometry. 
 
 ## 環境や使用しているツールなど
+Windows10 or higher
 visual studio 2022
 　.NET Framework 4.8
 　KitwareVTK
