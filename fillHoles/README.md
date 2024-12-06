@@ -10,5 +10,5 @@ https://examples.vtk.org/site/PythonicAPI/Meshes/FillHoles/   <br>
 上記サイトを参考にしている。tutorial フォルダでは、上記のサンプルコードの動作確認をしている。
 
 <br>
-![Form1-2024-12-06-13-33-31](https://github.com/user-attachments/assets/3e666008-9e30-4358-b578-e78873938c7a)
+![Form1-2024-12-06-13-33-31](https://github.com/tailup7/howtoVM/issues/1#issue-2722034631)
 
