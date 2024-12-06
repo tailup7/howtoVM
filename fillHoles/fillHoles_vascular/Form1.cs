@@ -56,7 +56,7 @@ namespace ActiViz.Examples
                     vtkFillHolesFilter fillHolesFilter = vtkFillHolesFilter.New();
                     fillHolesFilter.SetInputConnection(input.GetProducerPort());
                     // サイズを調整。埋めたい穴のサイズと周囲のメッシュ1個の大きさから決める? (埋めたい穴の直径) / (周囲のメッシュサイズ) ？
-                    fillHolesFilter.SetHoleSize(10000.0); 
+                    fillHolesFilter.SetHoleSize(10.0); 
                     fillHolesFilter.Update();  // 追加: フィルタを適用
 
                     // 出力ファイルのパスを決定
