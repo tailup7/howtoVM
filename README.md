@@ -8,7 +8,7 @@ but they can be used for a wide range of applications as a 3DCG process for tubu
 * Windows10 or higher
     * visual studio 2022
         * .NET Framework 4.8
-        * KitwareVTK (Activiz.Net.x64(5.8.0))
+        * VTKライブラリ (NuGetパッケージマージャーでActiviz.Net.x64(5.8.0)をインストール)
 
 ### あると便利なもの
 * meshmixer (stlファイルをすぐ開くため)
