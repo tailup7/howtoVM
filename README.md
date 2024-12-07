@@ -5,10 +5,11 @@ This repository is intended to keep a memorandum of the work that was required i
 but they can be used for a wide range of applications as a 3DCG process for tubular geometry. 
 
 ## 環境や使用しているツールなど
-* Windows10 or higher
+* Windows 10 or higher
     * visual studio 2022
         * .NET Framework 4.8
-        * KitwareVTK
+        * VTKライブラリ (NuGetパッケージマージャーでActiviz.Net.x64(5.8.0)をインストール)
+    * vmtk 1.4.0 (vmtkSetup参照)
 
 ### あると便利なもの
 * meshmixer (stlファイルをすぐ開くため)
