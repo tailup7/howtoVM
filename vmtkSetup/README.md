@@ -17,5 +17,5 @@ assetsに、Willis動脈輪のCT画像データを入れてある。ローカル
 <img src="../assets/Trim.gif" width="535" height="501" />
 
 <br>
-(※)この医用画像は以下のサイトより提供されている. <br>
+(※)このWillis動脈輪の医用画像は以下のサイトより提供されている。 <br>
 https://3dicomviewer.com/dicom-library/
