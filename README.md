@@ -9,7 +9,7 @@ but they can be used for a wide range of applications as a 3DCG process for tubu
     * visual studio 2022
         * .NET Framework 4.8
         * VTKライブラリ (NuGetパッケージマージャーでActiviz.Net.x64(5.8.0)をインストール)
-    * vmtk 1.4.0
+    * vmtk 1.4.0 (vmtkSetup参照)
 
 ### あると便利なもの
 * meshmixer (stlファイルをすぐ開くため)
