@@ -2,8 +2,9 @@
 
 ## vmtk とは
 vmtk(vascular modeling toolkit) は、血管形状モデルを扱う際のライブラリを提供している。<br>
-http://www.vmtk.org/documentation/vmtkscripts.html　<br>
-上のスクリプト一覧にあるように、ビューワ機能、表面平滑化、メッシュ作成、中心線抽出、曲率・ねじれ率計算、端面を塞ぐ(capping)...etc など様々な処理を簡単に実行できる。
+http://www.vmtk.org/documentation/vmtkscripts.html
+<br>
+のスクリプト一覧にあるように、ビューワ機能、表面平滑化、メッシュ作成、中心線抽出、曲率・ねじれ率計算、端面を塞ぐ(capping)...etc など様々な処理を簡単に実行できる。
 
 ## インストール
 setup.pptx に簡単にインストール手順を書いた。
