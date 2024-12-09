@@ -1,5 +1,5 @@
 # fillHolesとは
-VTKが提供する、三次元形状の表面で穴が開いている箇所を三角形パッチで埋める処理をするメソッド。ちなみにvmtkでも全く同じ事が出来て、
+VTKが提供する、三次元形状の表面で穴が開いている箇所を三角形パッチで埋める処理をするメソッド。ちなみにvmtk(Vascular Modelling Toolkit)でも全く同じ事が出来て、
 <br>
 <br>
 vmtksurfacecapper -ifile C:/.../inputFilename.stl -ofile C:/.../oututFilename.stl 
@@ -49,6 +49,6 @@ stlファイルを読み込み、端面を埋める処理をしてstlとして�
 
 #### 注釈
 *1 ... <br>
-vmtk (Vascular Modeling Toolkit) にはstlデータからテトラプリズム複合メッシュを切る機能もあって、元のstlは管壁のみでよく、流入面や流出面が空いていていいらしい <br>
+vmtkにはstlデータからテトラプリズム複合メッシュを切る機能もあって、元のstlは管壁のみでよく、流入面や流出面が空いていていいらしい <br>
 https://www.rccm.co.jp/icem/pukiwiki/index.php?%E8%A1%A8%E9%9D%A2%E3%83%A1%E3%83%83%E3%82%B7%E3%83%A5%E3%81%8B%E3%82%89%E3%83%97%E3%83%AA%E3%82%BA%E3%83%A0%E3%83%A1%E3%83%83%E3%82%B7%E3%83%A5%E3%81%AE%E4%BD%9C%E6%88%90%28vmtk%29     <br>
 さすがにメッシュの精度は有料のICEMの方がいいと思うが、時間があれば試してみたい。
