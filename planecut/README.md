@@ -17,6 +17,6 @@
 <br>
 
 <p align="center">
-  <img src="" alt="planecut_edge" width="800"/>
+  <img src="https://github.com/tailup7/howtoVM/blob/main/assets/planecut_edge.png" alt="planecut_edge" width="800"/>
 </p>
 <br>
