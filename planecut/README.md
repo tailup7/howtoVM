@@ -8,7 +8,7 @@
 <br>
 
 <p align="center">
-  <img src="" alt="planecut" width="600"/>
+  <img src="https://github.com/tailup7/howtoVM/blob/main/assets/planecut.png" alt="planecut" width="600"/>
 </p>
 
 ## 結果
