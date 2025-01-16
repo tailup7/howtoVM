@@ -4,7 +4,6 @@
 ## 使用しているもの
 * vmtk 1.4.0 (vmtkSetup参照)
 * paraview
-<br>
 
 ## usage
 vmtkcenterlines コマンドにより、stlデータから中心線データ(*.vtp)が出力できる。( http://www.vmtk.org/tutorials/Centerlines.html )
