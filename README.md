@@ -18,6 +18,6 @@ but they can be used for a wide range of applications as a 3DCG process for tubu
 ## 各フォルダについて
  + vmtkSetup      ---------- vmtk のセットアップ方法を簡単にまとめた。
  + extractCenterline --- vmtk を利用して、STLデータから中心線を抽出するメソッド
- + fillHoles    -------------  vtk を利用して、STLデータの表面の穴や、チューブ形状の端面を塞ぐためのメソッド。
- + planecut  ------------- vtk を利用して、STLデータの不要な形状部分を中心線に対して垂直に切断・除去するメソッド。
+ + fillHoles    ---------  vtk を利用して、STLデータの表面の穴や、チューブ形状の端面を塞ぐためのメソッド。
+ + planecut  -------- vtk を利用して、STLデータの不要な形状部分を中心線に対して垂直に切断・除去するメソッド。
  
