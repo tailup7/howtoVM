@@ -5,7 +5,7 @@ This repository is intended to keep a memorandum of the work that was required i
 but they can be used for a wide range of applications as a 3DCG process for tubular geometry. 
 
 ## 環境や使用しているツールなど
-* Windows 10 or higher
+* Windows 10 or higher (筆者は11を使用)
     * visual studio 2022
         * .NET Framework 4.8
         * VTKライブラリ (NuGetパッケージマージャーでActiviz.Net.x64(5.8.0)をインストール)
@@ -18,6 +18,6 @@ but they can be used for a wide range of applications as a 3DCG process for tubu
 ## 各フォルダについて
  + vmtkSetup      ---------- vmtk のセットアップ方法を簡単にまとめた。
  + extractCenterline --- vmtk を利用して、STLデータから中心線を抽出するメソッド
- + fillHoles    -------------  vtk を利用して、STLデータの表面の穴や、チューブ形状の端面を塞ぐためのメソッド。
- + planecut  ------------- vtk を利用して、不要な形状部分を中心線に対して垂直に切断・除去するメソッド。
+ + fillHoles    -------  vtkを利用してSTLデータの表面の穴や、チューブ形状の端面を塞ぐためのメソッド。
+ + planecut  ------ vtkを利用してSTLデータの不要な形状部分を中心線に対して垂直に切断・除去するメソッド。
  
