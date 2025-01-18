@@ -20,4 +20,5 @@ but they can be used for a wide range of applications as a 3DCG process for tubu
  + extractCenterline --- vmtk を利用して、STLデータから中心線を抽出するメソッド
  + fillHoles    -------  vtkを利用してSTLデータの表面の穴や、チューブ形状の端面を塞ぐためのメソッド。
  + planecut  ------ vtkを利用してSTLデータの不要な形状部分を中心線に対して垂直に切断・除去するメソッド。
+ + autoMeshing -- Gmshを利用して任意のチューブ形状に対してテトラ・プリズム複合メッシュを作成するコード
  
