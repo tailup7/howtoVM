@@ -21,10 +21,10 @@ r = 1.2        # 境界層の厚みの増加率
 h = 0.05       # 境界層の最初の層(一番外側)の厚さ
 
 # 流入面と流出面の大体の中心座標 (中心線情報があれば、その始点・終点の座標を使うのがシンプル)。INLET及びOUTLETを割り当てるときに参照する。
-inletSurface_center  = np.array([ 111.748276, 251.652390, 204.930370 ])  
+inletSurface_center  = np.array([ 1110000000, 251.652390, 204.930370 ])   #  111.748276, 251.652390, 204.930370 
 outletSurface_center = np.array([ 108.240890, 288.927400, 110.285000 ])
 
-# 流入面(流出面)の重心から、この距離以内に重心がある2次元エンティティは、流入面(流出面)とみなしてINLET(OUTLET)とする。
+# 流入面や流出面の半径程度に設定。流入面(流出面)の重心からこの距離以内に重心がある2次元エンティティは、流入面(流出面)とみなしてINLET(OUTLET)とする。
 judgeDistance = 4.0   
 # **********************************************************************************************************
 
@@ -67,9 +67,8 @@ def OptionSetting():
 # ===============================================
 # stlの読み込み
 def ImportStl():
-    # ファイル選択ダイアログでSTLファイルを選択
     root = tk.Tk()
-    root.withdraw()  # メインウィンドウを表示しない
+    root.withdraw() 
     filepath = filedialog.askopenfilename(title="Select an STL file", filetypes=[("STL Files", "*.stl")])
     if not filepath:
         print("STL file was not selected.")
@@ -115,13 +114,11 @@ def ShapeCreation():
     # tにすると表面の外側に境界層が張られる
     e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), n, -t, True)
 
-
     # 境界層を作成したときに積層された中で最も最後に積層された層の表面を取得
     top_ent = [s for s in e if s[0] == 2]
     for t in top_ent:
         surface_fake_wall.append(t[1])
     Syncronize()
-
 
     bnd_ent = gmsh.model.getBoundary(top_ent)
     bnd_curv = [c[1] for c in bnd_ent]
@@ -136,7 +133,6 @@ def ShapeCreation():
 
         surface_fake_wall.append(eachClosedSurface)
         surface_inlet_outlet.append(eachClosedSurface)
-
 
     # surface_fake_wallはテトラメッシュを作成する領域を囲む表面(2次元Entity)の集合
     innerSurfaceLoop = gmsh.model.geo.addSurfaceLoop(surface_fake_wall)
@@ -220,6 +216,12 @@ def NamingBoundary():
             outletList.append(something[i])
     print("INLET entities are ",inletList)
     print("OUTLET entities are ",outletList)
+    if inletList == []:
+        print("please set inletSurface_center correctly.")
+        sys.exit()
+    if outletList == []:
+        print("please set outletSurface_center correctly.")
+        sys.exit()
 
     gmsh.model.addPhysicalGroup(2, inletList, 20)
     gmsh.model.setPhysicalName(2, 20, "INLET")
