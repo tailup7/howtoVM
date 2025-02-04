@@ -1,5 +1,5 @@
 #include <iostream>
-#include <autoMeshing.h>
+#include <console.h>
 
 namespace autoMeshing {
     void test() {
