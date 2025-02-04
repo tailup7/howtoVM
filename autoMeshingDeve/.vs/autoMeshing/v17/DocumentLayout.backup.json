@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\git\\howtoVM\\autoMeshingDeve\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B27EE407-A356-4251-AB2F-D0937B562178}|autoMeshing.vcxproj|C:\\git\\howtoVM\\autoMeshingDeve\\console.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{B27EE407-A356-4251-AB2F-D0937B562178}|autoMeshing.vcxproj|solutionrelative:console.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B27EE407-A356-4251-AB2F-D0937B562178}|autoMeshing.vcxproj|C:\\git\\howtoVM\\autoMeshingDeve\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{B27EE407-A356-4251-AB2F-D0937B562178}|autoMeshing.vcxproj|solutionrelative:Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
@@ -11,12 +15,8 @@
       "RelativeMoniker": "D:0:0:{B27EE407-A356-4251-AB2F-D0937B562178}|autoMeshing.vcxproj|solutionrelative:test.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B27EE407-A356-4251-AB2F-D0937B562178}|autoMeshing.vcxproj|C:\\git\\howtoVM\\autoMeshingDeve\\console.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{B27EE407-A356-4251-AB2F-D0937B562178}|autoMeshing.vcxproj|solutionrelative:console.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B27EE407-A356-4251-AB2F-D0937B562178}|autoMeshing.vcxproj|C:\\git\\howtoVM\\autoMeshingDeve\\autoMeshing.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{B27EE407-A356-4251-AB2F-D0937B562178}|autoMeshing.vcxproj|solutionrelative:autoMeshing.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{B27EE407-A356-4251-AB2F-D0937B562178}|autoMeshing.vcxproj|C:\\git\\howtoVM\\autoMeshingDeve\\console.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{B27EE407-A356-4251-AB2F-D0937B562178}|autoMeshing.vcxproj|solutionrelative:console.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B27EE407-A356-4251-AB2F-D0937B562178}|autoMeshing.vcxproj|C:\\git\\howtoVM\\autoMeshingDeve\\test.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -30,19 +30,20 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "console.cpp",
               "DocumentMoniker": "C:\\git\\howtoVM\\autoMeshingDeve\\console.cpp",
               "RelativeDocumentMoniker": "console.cpp",
               "ToolTip": "C:\\git\\howtoVM\\autoMeshingDeve\\console.cpp",
               "RelativeToolTip": "console.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-02-04T09:16:54.382Z"
+              "WhenOpened": "2025-02-04T09:16:54.382Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -54,41 +55,44 @@
               "RelativeToolTip": "test.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-02-04T09:12:54.644Z"
+              "WhenOpened": "2025-02-04T09:12:54.644Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "autoMeshing.h",
-              "DocumentMoniker": "C:\\git\\howtoVM\\autoMeshingDeve\\autoMeshing.h",
-              "RelativeDocumentMoniker": "autoMeshing.h",
-              "ToolTip": "C:\\git\\howtoVM\\autoMeshingDeve\\autoMeshing.h",
-              "RelativeToolTip": "autoMeshing.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAABAAAAAAAAAA==",
+              "Title": "console.h",
+              "DocumentMoniker": "C:\\git\\howtoVM\\autoMeshingDeve\\console.h",
+              "RelativeDocumentMoniker": "console.h",
+              "ToolTip": "C:\\git\\howtoVM\\autoMeshingDeve\\console.h",
+              "RelativeToolTip": "console.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-02-04T09:12:27.293Z"
+              "WhenOpened": "2025-02-04T09:12:27.293Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "test.cpp",
               "DocumentMoniker": "C:\\git\\howtoVM\\autoMeshingDeve\\test.cpp",
               "RelativeDocumentMoniker": "test.cpp",
               "ToolTip": "C:\\git\\howtoVM\\autoMeshingDeve\\test.cpp",
               "RelativeToolTip": "test.cpp",
-              "ViewState": "AgIAADoAAAAAAAAAAAAAAE0AAAA8AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAE0AAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-02-04T09:09:11.952Z"
+              "WhenOpened": "2025-02-04T09:09:11.952Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Main.cpp",
-              "DocumentMoniker": "C:\\git\\howtoVM\\autoMeshingDeve\\Main.cpp",
-              "RelativeDocumentMoniker": "Main.cpp",
-              "ToolTip": "C:\\git\\howtoVM\\autoMeshingDeve\\Main.cpp",
-              "RelativeToolTip": "Main.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "main.cpp",
+              "DocumentMoniker": "C:\\git\\howtoVM\\autoMeshingDeve\\main.cpp",
+              "RelativeDocumentMoniker": "main.cpp",
+              "ToolTip": "C:\\git\\howtoVM\\autoMeshingDeve\\main.cpp",
+              "RelativeToolTip": "main.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-02-04T09:08:26.942Z",
               "EditorCaption": ""
