@@ -3,7 +3,7 @@
 #define CONSOLE_H
 
 namespace autoMeshing {
-    void test();
+    void writeHello();
 }
 
 #endif

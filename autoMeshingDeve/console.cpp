@@ -2,7 +2,7 @@
 #include <console.h>
 
 namespace autoMeshing {
-    void test() {
+    void writeHello() {
         std::cout << "Hello World!\n";
     }
 }
