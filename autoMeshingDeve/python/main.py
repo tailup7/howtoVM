@@ -98,5 +98,12 @@ utility.coords_to_nodes(coords,nodes_any)
 print("info_main    : please ignore. nodes_any sample =",nodes_any.nodes_any[2])
 print("info_main    : please ignore. nodes_any sample x =", nodes_any.nodes_any[2].x)
 for node_any in nodes_any.nodes_any:
-    node_any.correspond_centerlinenodeid(nodes_centerline.nodes_centerline)
-print("info_main    : please ignore. node_any sample correspond centerline id is ",nodes_any.nodes_any[2].correspond_centerlinenode_id)
+    node_any.find_closest_centerlinenode(nodes_centerline.nodes_centerline)
+print("info_main    : please ignore. node_any sample closest centerline node id is ",nodes_any.nodes_any[2].closest_centerlinenode_id)
+for node_any in nodes_any.nodes_any:
+    node_any.find_projectable_centerlineedge(nodes_centerline.nodes_centerline)
+print("info_main    : please ignore. node_any sample projectable centerline edge id is ",nodes_any.nodes_any[2].projectable_centerlineedge_id)
+print("success")
+# edgeradii = myio.read_txt_edgeradii()
+# for node_any in nodes_any.nodes_any:
+#     aaa = 1
