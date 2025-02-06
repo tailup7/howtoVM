@@ -95,15 +95,17 @@ nodes_centerline = node.NodesCenterline()
 myio.read_txt_centerline(nodes_centerline)
 nodes_any = node.NodesAny()
 utility.coords_to_nodes(coords,nodes_any)
-print("info_main    : please ignore. nodes_any sample =",nodes_any.nodes_any[2])
-print("info_main    : please ignore. nodes_any sample x =", nodes_any.nodes_any[2].x)
+# print("info_main    : please ignore. nodes_any sample =",nodes_any.nodes_any[2])
+# print("info_main    : please ignore. nodes_any sample x =", nodes_any.nodes_any[2].x)
+edgeradii = myio.read_txt_edgeradii()    # TODO : radius.txtを読み込むのではなく、入力されたSTLと中心線から計算するように変更
+
 for node_any in nodes_any.nodes_any:
     node_any.find_closest_centerlinenode(nodes_centerline.nodes_centerline)
-print("info_main    : please ignore. node_any sample closest centerline node id is ",nodes_any.nodes_any[2].closest_centerlinenode_id)
-for node_any in nodes_any.nodes_any:
     node_any.find_projectable_centerlineedge(nodes_centerline.nodes_centerline)
-print("info_main    : please ignore. node_any sample projectable centerline edge id is ",nodes_any.nodes_any[2].projectable_centerlineedge_id)
-print("success")
-# edgeradii = myio.read_txt_edgeradii()
-# for node_any in nodes_any.nodes_any:
-#     aaa = 1
+    node_any.set_edgeradius(edgeradii)
+    node_any.set_scalar_forbgm(edgeradii)
+
+# print("info_main    : please ignore. node_any sample closest centerline node id is ",nodes_any.nodes_any[2].closest_centerlinenode_id)
+# print("info_main    : please ignore. node_any sample projectable centerline edge id is ",nodes_any.nodes_any[2].projectable_centerlineedge_id)
+# print("info_main    : please ignore. node_any sample edge radius is ",nodes_any.nodes_any[2].edgeradius)
+# print("info_main    : please ignore. node_any sample scalar_forbgm is ",nodes_any.nodes_any[2].scalar_forbgm)

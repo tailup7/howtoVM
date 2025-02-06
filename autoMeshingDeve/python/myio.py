@@ -44,5 +44,5 @@ def read_txt_edgeradii():
         line = line.strip()
         if line and not line.startswith('#'):
             edgeradii.append(float(line))
-        print(f"info_myio    : num of edges is {len(edgeradii)}")
+    print(f"info_myio    : num of edges is {len(edgeradii)}")
     return edgeradii

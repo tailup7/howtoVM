@@ -26,6 +26,7 @@ class NodeAny:
         self.closest_centerlinenode_id = None
         self.projectable_centerlineedge_id = None
         self.edgeradius = None
+        self.scalar_forbgm = None
 
     def __str__(self):
         return f"NodeAny(id={self.id}, x={self.x}, y={self.y}, z={self.z})"
@@ -55,10 +56,16 @@ class NodeAny:
                 if utility.calculate_PH_length(self, nodes_centerline[ccid], nodes_centerline[ccid+1]) < distance_temp:
                     self.projectable_centerlineedge_id = ccid
 
-    def add_edgeradius(self,edgeradii):
+    def set_edgeradius(self,edgeradii):
         if self.projectable_centerlineedge_id != None:
             self.edgeradius = edgeradii[self.projectable_centerlineedge_id+1]
 
+    def set_scalar_forbgm(self,edgeradii):
+        if self.edgeradius != None:
+            self.scalar_forbgm = self.edgeradius
+        else:
+            average_edgeradius = (edgeradii[self.closest_centerlinenode_id] + edgeradii[self.closest_centerlinenode_id+1])/2
+            self.scalar_forbgm = average_edgeradius
 
 class NodesAny:
     def __init__(self):
