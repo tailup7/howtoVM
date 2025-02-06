@@ -38,7 +38,7 @@ gmsh.option.setNumber("General.Terminal", 1)
 # ディレクトリやファイルのパスのOSごとの差を吸収
 path = os.path.dirname(os.path.abspath(__file__))
 # stlの読み込み
-gmsh.merge(os.path.join(path, "WALL.stl"))    ##################################################################
+gmsh.merge(os.path.join(path, "data/WALL.stl"))    ##################################################################
 # 読み込んだ形状を設定した角度で分解
 # forReparametrizationをTrueにしないとメッシングで時間がかかる
 gmsh.model.mesh.classifySurfaces(angle = 40 * np.pi / 180, boundary=True, forReparametrization=True)
@@ -94,9 +94,9 @@ gmsh.write("tetraMeshOriginal.msh")
 nodes_centerline = node.NodesCenterline()
 myio.read_txt_centerline(nodes_centerline)
 nodes_any = node.NodesAny()
-utility.PostProcessGmsh.coords_to_nodes(coords,nodes_any)
+utility.coords_to_nodes(coords,nodes_any)
 print("info_main    : please ignore. nodes_any sample =",nodes_any.nodes_any[2])
 print("info_main    : please ignore. nodes_any sample x =", nodes_any.nodes_any[2].x)
 for node_any in nodes_any.nodes_any:
-    node_any.append_correspondcenterlinenodeid(nodes_centerline.nodes_centerline)
+    node_any.correspond_centerlinenodeid(nodes_centerline.nodes_centerline)
 print("info_main    : please ignore. node_any sample correspond centerline id is ",nodes_any.nodes_any[2].correspond_centerlinenode_id)
