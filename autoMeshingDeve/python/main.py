@@ -84,7 +84,7 @@ gmsh.model.geo.addVolume([surfaceLoop])
 gmsh.model.geo.synchronize()  ## ここにこれを入れないと、print(len(nodes))が、表面Nodeのときに出力したprint(len(nodes))と同じ値になってしまう。
 gmsh.model.mesh.generate(3)  ###  しかし、generate(3)は、synchronize() しなくても、正常に処理される
 #gmsh.model.geo.synchronize()
-nodes, coords, _ = gmsh.model.mesh.getNodes()
+nodeids, coords, _ = gmsh.model.mesh.getNodes()
 gmsh.write("tetraMeshOriginal.vtk")
 gmsh.write("tetraMeshOriginal.stl")
 gmsh.write("tetraMeshOriginal.msh")
@@ -94,12 +94,14 @@ gmsh.write("tetraMeshOriginal.msh")
 nodes_centerline = node.NodesCenterline()
 myio.read_txt_centerline(nodes_centerline)
 nodes_any = node.NodesAny()
-utility.coords_to_nodes(coords,nodes_any)
+utility.coords_to_nodes(nodeids,coords,nodes_any)
 # print("info_main    : please ignore. nodes_any sample =",nodes_any.nodes_any[2])
 # print("info_main    : please ignore. nodes_any sample x =", nodes_any.nodes_any[2].x)
 edgeradii = myio.read_txt_edgeradii()    # TODO : radius.txtを読み込むのではなく、入力されたSTLと中心線から計算するように変更
 
+nodeany_dict={}
 for node_any in nodes_any.nodes_any:
+    nodeany_dict[node_any.id] = node_any  # テトラメッシュからbdmeshを作成する際に使う。
     node_any.find_closest_centerlinenode(nodes_centerline.nodes_centerline)
     node_any.find_projectable_centerlineedge(nodes_centerline.nodes_centerline)
     node_any.set_edgeradius(edgeradii)
@@ -109,3 +111,7 @@ for node_any in nodes_any.nodes_any:
 # print("info_main    : please ignore. node_any sample projectable centerline edge id is ",nodes_any.nodes_any[2].projectable_centerlineedge_id)
 # print("info_main    : please ignore. node_any sample edge radius is ",nodes_any.nodes_any[2].edgeradius)
 # print("info_main    : please ignore. node_any sample scalar_forbgm is ",nodes_any.nodes_any[2].scalar_forbgm)
+
+tetra_list = myio.read_msh_tetra()
+print("info_main    :nodes ids of sample tetra ",tetra_list[100])
+print("info_main    :dict test",nodeany_dict[100])

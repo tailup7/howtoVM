@@ -31,20 +31,28 @@ def calculate_PH_length(P,A,B):
 
 
 # gmsh.model.mesh.getNodes() で得られる全Nodeのx,y,z座標成分はまとめて1つのリストになっているので、nodeごとにリストに分割する
-def coords_to_nodes(coords, nodes_any):
+# 
+def coords_to_nodes(nodeids, coords, nodes_any):
     if len(coords)%3!=0:
         print("mylib_info   : coords_to_nodes error.")
         sys.exit()
     else:
-        for i in range(len(coords)):
-            if i%3==0:
-                x = coords[i]
-            elif i%3==1:
-                y = coords[i]
-            else:
-                z = coords[i]
-                node_any = node.NodeAny((i+1)//3-1,x,y,z)
-                nodes_any.append(node_any)
+        # for i in range(len(coords)):
+        #     if i%3==0:
+        #         x = coords[i]
+        #     elif i%3==1:
+        #         y = coords[i]
+        #     else:
+        #         z = coords[i]
+        #         node_any = node.NodeAny((i+1)//3-1,x,y,z)
+        #         nodes_any.append(node_any)
+        for i in range(len(nodeids)):
+            x = coords[3*i]
+            y = coords[3*i+1]
+            z = coords[3*i+2]
+            id = nodeids[i]
+            node_any = node.NodeAny(id,x,y,z)
+            nodes_any.append(node_any)
     print(f"info_utility   : node count after postprocess gmsh is {len(nodes_any.nodes_any)}")
 
 

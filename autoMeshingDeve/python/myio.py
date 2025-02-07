@@ -46,3 +46,24 @@ def read_txt_edgeradii():
             edgeradii.append(float(line))
     print(f"info_myio    : num of edges is {len(edgeradii)}")
     return edgeradii
+
+def read_msh_tetra():
+    root = tk.Tk()
+    root.withdraw()
+    filepath = filedialog.askopenfilename(
+        title="Select tetra mesh data (*.msh)", 
+        filetypes=[("Mesh Files", "*.msh"), ("All Files", "*.*")]
+    )
+    if not filepath:
+        print("No file selected. Exiting program.")
+        sys.exit()
+    tetra_list = []
+    with open(filepath, 'r') as file:
+        lines = file.readlines()
+        for line in lines:
+            columns = line.split()
+            if len(columns) == 9 and columns[1] == '4':
+                tetra = [int(columns[i]) for i in range(5, 9)]
+                tetra_list.append(tetra)
+    print("info_myio    : num of tetra is",len(tetra_list))
+    return tetra_list
