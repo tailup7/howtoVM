@@ -22,7 +22,7 @@ assetsに、Willis動脈輪のCT画像データを入れてある。ローカル
 <br>
 <br>
 
-<img src="../assets/Trim.gif" width="535" height="501" />
+<img src="../pictures/Trim.gif" width="535" height="501" />
 
 <br>
 (※)このWillis動脈輪の医用画像は以下のサイトより提供されている。 <br>
