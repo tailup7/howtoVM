@@ -1,7 +1,7 @@
 # Gmshを利用して、任意のチューブ形状に対してテトラ・プリズム複合メッシュを作成するpythonコード
 
 <p align="center">
-  <img src="https://github.com/tailup7/howtoVM/blob/main/assets/beforeafter.png" alt="meshing" width="1000"/>
+  <img src="https://github.com/tailup7/howtoVM/blob/main/pictures/beforeafter.png" alt="meshing" width="1000"/>
 </p>
 
 ## Gmsh とは
@@ -19,7 +19,7 @@ Gmshは、各セルに物理的な意味を表す名前を持たせることが�
 10:WALL(管壁), 20:INLET(流入面), 30:OUTLET(流出面), 100:INTERNAL(内部領域)
 <br>
 <p align="left">
-  <img src="https://github.com/tailup7/howtoVM/blob/main/assets/autoMeshing_output.png" alt="planecut_edge" width="400"/>
+  <img src="https://github.com/tailup7/howtoVM/blob/main/pictures/autoMeshing_output.png" alt="planecut_edge" width="400"/>
 </p>
 <br>
 
