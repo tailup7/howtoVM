@@ -15,7 +15,7 @@ vmtkcenterlines コマンドにより、stlデータから中心線データ(*.v
 
 
 <p align="center">
-  <img src="../assets/surface_and_centerline.png" alt="planecut_edge" width="800"/>
+  <img src="../pictures/surface_and_centerline.png" alt="planecut_edge" width="800"/>
 </p>
 
 中心線の端が端面に届いていないことが分かる。これは、vmtkcenterlineのアルゴリズムでは中心線の点を形状の最大内接球の中心として求めるためである。中心線を端面まで作りたい場合は、追加で処理を加える必要がある。
