@@ -7,7 +7,7 @@ gmsh.initialize(sys.argv)
 
 # merge STL, create surface patches that are reparametrizable (so we can remesh them) and compute the parametrizations
 path = os.path.dirname(os.path.abspath(__file__))
-gmsh.merge(os.path.join(path, 'aneurysm_data.stl'))
+gmsh.merge(os.path.join(path, 'data/aneurysm_data.stl'))
 gmsh.model.mesh.classifySurfaces(math.pi, True, True)
 gmsh.model.mesh.createGeometry()
 
@@ -60,5 +60,7 @@ gmsh.write("aneyrysm.vtk")
 
 if '-nopopup' not in sys.argv:
     gmsh.fltk.run()
+
+gmsh.model.mesh.generate(3)
 
 gmsh.finalize()
