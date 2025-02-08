@@ -7,8 +7,8 @@ but they can be used for a wide range of applications as a 3DCG process for tubu
 <br>
 ※ 血管形状モデリングの一番最初の工程で、かつ全工程の中でも重要な位置を占めるのが、医用画像から血管領域を抽出し2D→3Dにする工程ですが、研究室のインハウスソフトウェアを使用していることと、医用画像自体が個人情報とも言えるので、ここでは紹介しません。
 
-## 環境や使用しているツール・言語など
-* OS : Windows 10 or higher (筆者は11を使用)
+## 使用している環境
+* OS : Windows 11 
     * IDE : VScode
          * 言語 : 主にpython
 
