@@ -5,9 +5,9 @@
 </p>
 
 ## Gmsh とは
-Gmsh (https://gmsh.info/doc/texinfo/gmsh.html) はフリーのメッシュ生成ソフトウェアである。GUIで視覚的に3次元形状を作成・メッシュを生成することも可能だが、pythonAPIも提供しており、高度なメッシュ生成が可能である。
+Gmsh (https://gmsh.info/doc/texinfo/gmsh.html) はフリーのメッシュ生成ソフトウェアである。GmshのコアライブラリはC++で記述されているが、pythonやfortranなどの言語にもAPIを提供しており、その機能をスクリプトから簡単に利用できる。ドキュメントやチュートリアル問題が充実していて、非常に使いやすい。上のリンクの2章のチュートリアルを一通り実行すれば要領をつかむことができ、6章や (https://gitlab.onelab.info/gmsh/gmsh/-/tree/master/api?ref_type=heads) ページから、呼び出せるメソッドが確認できる。GUI機能もあるが、筆者は処理結果の確認のためのビューワとしてしか利用していない。
 
-## 使い方
+## 本コードの使い方
 autoMeshing.py を実行してみて下さい。入力データとして、サンプル (WALL.stl) も載せています。<br>
 <br>
 autoMeshing.py 内のパラメータ(メッシュのサイズやプリズム層の層数など)を変えることで、適切な解析モデルを得ることができます。<br>
