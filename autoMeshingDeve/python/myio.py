@@ -2,6 +2,7 @@ import node
 import sys
 import tkinter as tk
 from tkinter import filedialog
+import os
 
 def read_txt_centerline(nodes_centerline):
     root = tk.Tk()
@@ -48,14 +49,9 @@ def read_txt_edgeradii():
     return edgeradii
 
 def read_msh_tetra():
-    root = tk.Tk()
-    root.withdraw()
-    filepath = filedialog.askopenfilename(
-        title="Select tetra mesh data (*.msh)", 
-        filetypes=[("Mesh Files", "*.msh"), ("All Files", "*.*")]
-    )
-    if not filepath:
-        print("No file selected. Exiting program.")
+    filepath = os.path.join(os.getcwd(), "bgm.msh")
+    if not os.path.isfile(filepath):
+        print(f"Error: '{filepath}' does not exist.")
         sys.exit()
     tetra_list = []
     with open(filepath, 'r') as file:
@@ -67,3 +63,25 @@ def read_msh_tetra():
                 tetra_list.append(tetra)
     print("info_myio    : num of tetra is",len(tetra_list))
     return tetra_list
+
+def write_pos_bgm(tetra_list,nodeany_dict):
+    with open("bgm.pos", 'w') as f:
+        f.write('View "background mesh" {\n')
+        coords_list=[]
+        scalars_list=[]
+        for tetra in tetra_list:
+            coords=[]
+            scalars=[]
+            for i in range(len(tetra)):
+                coords.append(nodeany_dict[tetra[i]].x)
+                coords.append(nodeany_dict[tetra[i]].y)
+                coords.append(nodeany_dict[tetra[i]].z)
+                scalars.append(nodeany_dict[tetra[i]].scalar_forbgm)
+            coords_list.append(coords)
+            scalars_list.append(scalars)
+        for i in range(len(tetra_list)):
+            c = coords_list[i]
+            s = scalars_list[i]
+            f.write(f"SS({c[0]},{c[1]},{c[2]},{c[3]},{c[4]},{c[5]},{c[6]},{c[7]},{c[8]},{c[9]},{c[10]},{c[11]})"
+                    f"{{{s[0]:.2f},{s[1]:.2f},{s[2]:.2f},{s[3]:.2f}}};\n")
+        f.write('};')

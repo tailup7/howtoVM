@@ -62,10 +62,10 @@ class NodeAny:
 
     def set_scalar_forbgm(self,edgeradii):
         if self.edgeradius != None:
-            self.scalar_forbgm = self.edgeradius
+            self.scalar_forbgm = self.edgeradius*0.1
         else:
             average_edgeradius = (edgeradii[self.closest_centerlinenode_id] + edgeradii[self.closest_centerlinenode_id+1])/2
-            self.scalar_forbgm = average_edgeradius
+            self.scalar_forbgm = average_edgeradius*0.1
 
 class NodesAny:
     def __init__(self):
