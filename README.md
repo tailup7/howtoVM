@@ -1,5 +1,5 @@
 # 概要
-このリポジトリは、血管形状のモデリングの際に必要となった作業について、覚書として残しておくためのリポジトリです。基本的に血流解析の前処理としての位置づけですが、3D形状処理として、血管以外、流体解析以外で使える部分もあると思います。<br>
+このリポジトリは、血管形状のモデリングの際に必要となった作業や処理について、覚書として残しておくためのリポジトリです。基本的に血流解析の前処理としての位置づけですが、3D形状処理として、血管以外、流体解析以外で使える部分もあると思います。<br>
 <br>
 This repository is intended to keep a memorandum of the work that was required in Vascular Modeling. Basically, methods in this repository are intended as pre-processing for blood flow analysis,  
 but they can be used for a wide range of applications as a 3DCG process for tubular geometry. 
