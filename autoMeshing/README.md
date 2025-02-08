@@ -37,5 +37,5 @@ transformPoints -scale "(1e-3 1e-3 1e-3)"
 <br>
 ↓ OpenFOAMで流体解析を行い、壁面せん断応力の分布を可視化した結果
 <p align="left">
-  <img src="https://github.com/tailup7/howtoVM/blob/main/assets/autoMeshing_OpenFOAM_WSS.png" alt="WSS" width="400"/>
+  <img src="https://github.com/tailup7/howtoVM/blob/main/pictures/autoMeshing_OpenFOAM_WSS.png" alt="WSS" width="400"/>
 </p>
