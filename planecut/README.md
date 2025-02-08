@@ -10,7 +10,7 @@
 <br>
 
 <p align="center">
-  <img src="https://github.com/tailup7/howtoVM/blob/main/assets/planecut.png" alt="planecut" width="600"/>
+  <img src="https://github.com/tailup7/howtoVM/blob/main/pictures/planecut.png" alt="planecut" width="600"/>
 </p>
 
 ## 結果
@@ -19,6 +19,6 @@
 <br>
 
 <p align="center">
-  <img src="https://github.com/tailup7/howtoVM/blob/main/assets/planecut_edge.png" alt="planecut_edge" width="800"/>
+  <img src="https://github.com/tailup7/howtoVM/blob/main/pictures/planecut_edge.png" alt="planecut_edge" width="800"/>
 </p>
 <br>
