@@ -15,3 +15,5 @@ https://gitlab.onelab.info/gmsh/gmsh/-/tree/gmsh_4_13_1/examples/api
 <p align="left">
   <img src="https://github.com/tailup7/howtoVM/blob/main/pictures/aneurysm_msh.png" alt="meshing" width="400"/>
 </p>
+
+上にもデータとコードを置いてある。簡単なのでローカルにコピーして試してみてほしい(pythonが使えてパスを通していれば、「pip install gmsh」→「python aneurysm.py」だけで実行できるはず...)。
