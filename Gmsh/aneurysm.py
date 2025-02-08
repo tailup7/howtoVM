@@ -55,12 +55,13 @@ gmsh.option.setNumber('Mesh.Algorithm', 1)
 gmsh.option.setNumber('Mesh.MeshSizeFactor', 0.1)
 
 gmsh.option.setNumber("Mesh.MshFileVersion", 2.2)
-gmsh.write("aneyrysm.msh")
-gmsh.write("aneyrysm.vtk")
+
+gmsh.model.mesh.generate(3)
+
+gmsh.write("aneurysm.msh")
+gmsh.write("aneurysm.vtk")
 
 if '-nopopup' not in sys.argv:
     gmsh.fltk.run()
-
-gmsh.model.mesh.generate(3)
 
 gmsh.finalize()
