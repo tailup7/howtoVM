@@ -18,7 +18,7 @@ but they can be used for a wide range of applications as a 3DCG process for tubu
 
 ### 紹介しているソフトウェア・ライブラリ
 * vtk examples (Kitwareが提供する、モデリング・可視化に関するライブラリ。C++やpython, javaなどの主要言語のAPIを提供している。)
-* vmtk 1.4.0 (Vascular Modeling Toolkit の略。CUI機能を提供しておりCUIで利用する)
+* vmtk 1.4.0 (Vascular Modeling Toolkit の略。VTKから派生したもの。C++, python のAPIを提供している。CUI機能を提供しておりCUIで利用するのが便利かも)
 * Gmsh-4.13 (高機能だがフリーのメッシュ生成ソフトウェア。C++やpythonなどの主要言語のAPIを提供している。)
 
 ## 各ディレクトリについて
