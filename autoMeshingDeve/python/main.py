@@ -1,6 +1,8 @@
 import mygmsh
 import node 
+import cell
 import myio
+import config
 import os
 
 # parameter for tetraprism
@@ -46,8 +48,59 @@ mygmsh.tetraprism_mutable(filepath_stl,N,r,h)
 # bgm.posを参照し、表面メッシュが非一様なstlをVTK形式で出力
 filepath_vtk = mygmsh.surfacemesh(filepath_stl)
 surfacenodes,surfacetriangles = myio.read_vtk_outersurface(filepath_vtk)
+surfacenode_dict={}
 for surfacenode in surfacenodes.nodes_any:
     surfacenode.find_closest_centerlinenode(nodes_centerline.nodes_centerline)
+    surfacenode.find_projectable_centerlineedge(nodes_centerline.nodes_centerline)
+    surfacenode.set_edgeradius(edgeradii)
+    surfacenode.set_scalar_forlayer(edgeradii)
+    surfacenode_dict[surfacenode.id] = surfacenode
+
+# 一番内側の層を作る
+num_of_nodes=0
+temp = set()
+mostinnersurfacenode_dict={}
 for surfacetriangle in surfacetriangles.triangles:
     surfacetriangle.calc_unitnormal(node_centerline_dict)
+
+    nodes = [surfacetriangle.node0, surfacetriangle.node1, surfacetriangle.node2]
+    for onenode in nodes:
+        if onenode.id in temp:
+            mostinnersurfacenode_dict[onenode.id].x += surfacetriangle.unitnormal_in[0]*config.boundarylayer_ratio*onenode.scalar_forlayer
+            mostinnersurfacenode_dict[onenode.id].y += surfacetriangle.unitnormal_in[1]*config.boundarylayer_ratio*onenode.scalar_forlayer
+            mostinnersurfacenode_dict[onenode.id].z += surfacetriangle.unitnormal_in[2]*config.boundarylayer_ratio*onenode.scalar_forlayer
+            mostinnersurfacenode_dict[onenode.id].sumcountor += 1
+        else:
+            x =  surfacetriangle.unitnormal_in[0]*config.boundarylayer_ratio*onenode.scalar_forlayer
+            y =  surfacetriangle.unitnormal_in[1]*config.boundarylayer_ratio*onenode.scalar_forlayer
+            z =  surfacetriangle.unitnormal_in[2]*config.boundarylayer_ratio*onenode.scalar_forlayer
+            mostinnersurfacenode = node.NodeAny(onenode.id, x, y, z)
+            mostinnersurfacenode_dict[onenode.id] = mostinnersurfacenode
+            temp.add(onenode.id)
+            num_of_nodes += 1
+print("num of mostinnersurface nodes =",num_of_nodes)
+mostinnersurfacenodes=[]
+for i in range(num_of_nodes):
+    mostinnersurfacenode_dict[i].x = surfacenode_dict[i].x + mostinnersurfacenode_dict[i].x/mostinnersurfacenode_dict[i].sumcountor
+    mostinnersurfacenode_dict[i].y = surfacenode_dict[i].y + mostinnersurfacenode_dict[i].y/mostinnersurfacenode_dict[i].sumcountor
+    mostinnersurfacenode_dict[i].z = surfacenode_dict[i].z + mostinnersurfacenode_dict[i].z/mostinnersurfacenode_dict[i].sumcountor
+    mostinnersurfacenodes.append(mostinnersurfacenode_dict[i])
+mostinnersurfacenode_sorted = sorted(mostinnersurfacenodes, key=lambda obj: obj.id)
+
+mostinnersurfacetriangles=[]
+mostinnersurfacetriangle_dict={}
+for surfacetriangle in surfacetriangles.triangles:
+    node0 = mostinnersurfacenode_dict[surfacetriangle.node0.id]
+    node1 = mostinnersurfacenode_dict[surfacetriangle.node1.id]
+    node2 = mostinnersurfacenode_dict[surfacetriangle.node2.id]
+    node0.find_closest_centerlinenode(nodes_centerline.nodes_centerline)
+    node1.find_closest_centerlinenode(nodes_centerline.nodes_centerline)
+    node2.find_closest_centerlinenode(nodes_centerline.nodes_centerline)
+    mostinnersurfacetriangle = cell.Triangle(surfacetriangle.id,node0,node1,node2)
+    mostinnersurfacetriangle.calc_unitnormal(node_centerline_dict)
+    mostinnersurfacetriangle_dict[surfacetriangle.id] = mostinnersurfacetriangle
+    mostinnersurfacetriangles.append(mostinnersurfacetriangle)
+
 print("info_main    :surfacetriangle unitnormal_out sample is",surfacetriangles.triangles[10].unitnormal_out)
+
+myio.write_stl_mostinnersurface(mostinnersurfacetriangles)

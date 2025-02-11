@@ -46,6 +46,8 @@ class NodeAny:
         self.projectable_centerlineedge_id = None
         self.edgeradius = None
         self.scalar_forbgm = None
+        self.scalar_forlayer=None
+        self.sumcountor = 1 
 
     def __str__(self):
         return f"NodeAny(id={self.id}, x={self.x}, y={self.y}, z={self.z})"
@@ -86,6 +88,13 @@ class NodeAny:
         else:
             average_edgeradius = (edgeradii[self.closest_centerlinenode_id] + edgeradii[self.closest_centerlinenode_id+1])/2
             self.scalar_forbgm = average_edgeradius*scaling_factor
+    
+    def set_scalar_forlayer(self,edgeradii):
+        if self.edgeradius != None:
+            self.scalar_forlayer = self.edgeradius*2
+        else:
+            average_edgeradius = (edgeradii[self.closest_centerlinenode_id] + edgeradii[self.closest_centerlinenode_id+1])/2
+            self.scalar_forlayer = average_edgeradius*2
 
 class NodesAny:
     def __init__(self):

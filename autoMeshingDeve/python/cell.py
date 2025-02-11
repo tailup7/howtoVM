@@ -22,6 +22,12 @@ class Triangle:
         else:
             self.unitnormal_in = normal/np.linalg.norm(normal)
             self.unitnormal_out = - self.unitnormal_in
+    
+    def calc_centroid(self):
+        x = (self.node0.x + self.node1.x + self.node2.x)/3
+        y = (self.node0.y + self.node1.y + self.node2.y)/3
+        z = (self.node0.z + self.node1.z + self.node2.z)/3
+        self.centroid=[x,y,z]
 
 class Triangles:
     def __init__(self):

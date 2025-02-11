@@ -137,3 +137,17 @@ def read_vtk_outersurface(filepath_vtk):
     print("info_myio    : num of outersurface points is ",node_id)
     print("info_myio    : num of outersurface triangles is ",triangle_id)
     return surfacenodes,surfacetriangles
+
+def write_stl_mostinnersurface(triangle_list):
+    filepath=os.path.join("output","mostinnersurface.stl")
+    with open(filepath, 'w') as f:
+        f.write("solid model\n")
+        for triangle in triangle_list:
+            f.write(f"  facet normal {triangle.unitnormal_out[0]} {triangle.unitnormal_out[1]} {triangle.unitnormal_out[2]}\n")
+            f.write("    outer loop\n")
+            f.write(f"      vertex {triangle.node0.x} {triangle.node0.y} {triangle.node0.z}\n")
+            f.write(f"      vertex {triangle.node1.x} {triangle.node1.y} {triangle.node1.z}\n")
+            f.write(f"      vertex {triangle.node2.x} {triangle.node2.y} {triangle.node2.z}\n")
+            f.write("    endloop\n")
+            f.write("  endfacet\n")
+        f.write("endsolid model\n")
