@@ -1,4 +1,5 @@
 import utility
+import numpy as np
 
 class NodeCenterline:
     def __init__(self,id,x,y,z):
@@ -24,6 +25,7 @@ class NodeAny:
         self.y = y
         self.z = z
         self.closest_centerlinenode_id = None
+        self.closest_centerlinenode_distance = None
         self.projectable_centerlineedge_id = None
         self.edgeradius = None
         self.scalar_forbgm = None
@@ -38,6 +40,7 @@ class NodeAny:
             if distance_square < min_distance_square:
                 min_distance_square = distance_square
                 self.closest_centerlinenode_id = node_centerline.id
+                self.closest_centerlinenode_distance = np.sqrt(min_distance_square)
     
     def find_projectable_centerlineedge(self,nodes_centerline):
         ccid = self.closest_centerlinenode_id
@@ -60,12 +63,12 @@ class NodeAny:
         if self.projectable_centerlineedge_id != None:
             self.edgeradius = edgeradii[self.projectable_centerlineedge_id+1]
 
-    def set_scalar_forbgm(self,edgeradii):
+    def set_scalar_forbgm(self,edgeradii,scaling_factor):
         if self.edgeradius != None:
-            self.scalar_forbgm = self.edgeradius*0.1
+            self.scalar_forbgm = self.edgeradius*scaling_factor
         else:
             average_edgeradius = (edgeradii[self.closest_centerlinenode_id] + edgeradii[self.closest_centerlinenode_id+1])/2
-            self.scalar_forbgm = average_edgeradius*0.1
+            self.scalar_forbgm = average_edgeradius*scaling_factor
 
 class NodesAny:
     def __init__(self):

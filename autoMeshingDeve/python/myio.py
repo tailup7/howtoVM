@@ -4,16 +4,10 @@ import tkinter as tk
 from tkinter import filedialog
 import os
 
-def read_txt_centerline(nodes_centerline):
-    root = tk.Tk()
-    root.withdraw()
-    filepath = filedialog.askopenfilename(
-        title="Select centerline data (*.txt)", 
-        filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")]
-    )
-    if not filepath:
-        print("No file selected. Exiting program.")
-        sys.exit()
+def read_txt_centerline(nodes_centerline,filepath):
+    if not os.path.isfile(filepath):
+            print(f"Error: '{filepath}' does not exist.")
+            sys.exit()
     with open(filepath, 'r') as file:
         lines = file.readlines()
     index = 0
@@ -28,16 +22,10 @@ def read_txt_centerline(nodes_centerline):
     print(f"info_myio  : centerline nodes count is {len(nodes_centerline.nodes_centerline)}")
     print("info_myio  : please ignore. centerline_node_sample =  ",nodes_centerline.nodes_centerline[6])
 
-def read_txt_edgeradii():
-    root = tk.Tk()
-    root.withdraw()
-    filepath = filedialog.askopenfilename(
-        title=" Select targetRadius data (*.txt)", 
-        filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")]
-    )
-    if not filepath:
-        print("No file selected. Exiting program.")
-        sys.exit()
+def read_txt_edgeradii(filepath):
+    if not os.path.isfile(filepath):
+            print(f"Error: '{filepath}' does not exist.")
+            sys.exit()
     edgeradii = []
     with open(filepath, 'r') as file:
         lines = file.readlines()
@@ -49,7 +37,7 @@ def read_txt_edgeradii():
     return edgeradii
 
 def read_msh_tetra():
-    filepath = os.path.join(os.getcwd(), "bgm.msh")
+    filepath = os.path.join("output", "bgm.msh")
     if not os.path.isfile(filepath):
         print(f"Error: '{filepath}' does not exist.")
         sys.exit()
@@ -65,7 +53,8 @@ def read_msh_tetra():
     return tetra_list
 
 def write_pos_bgm(tetra_list,nodeany_dict):
-    with open("bgm.pos", 'w') as f:
+    filepath = os.path.join("output", "bgm.pos")
+    with open(filepath, 'w') as f:
         f.write('View "background mesh" {\n')
         coords_list=[]
         scalars_list=[]

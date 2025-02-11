@@ -6,10 +6,10 @@ import sys
 # generate background mesh
 def generate_bgm(meshsize, filepath):
     gmsh.initialize(sys.argv)
-    # ディレクトリやファイルのパスのOSごとの差を吸収
+
     path = os.path.dirname(os.path.abspath(__file__))
-    # stlの読み込み
-    gmsh.merge(os.path.join(path, filepath))    ##################################################################
+    gmsh.merge(os.path.join(path, filepath))  
+    
     # 読み込んだ形状を設定した角度で分解
     # forReparametrizationをTrueにしないとメッシングで時間がかかる
     gmsh.model.mesh.classifySurfaces(angle = 40 * np.pi / 180, boundary=True, forReparametrization=True)
@@ -51,57 +51,167 @@ def generate_bgm(meshsize, filepath):
     gmsh.model.mesh.generate(3)  ###  しかし、generate(3)は、synchronize() しなくても、正常に処理される
     #gmsh.model.geo.synchronize()
     nodeids, coords, _ = gmsh.model.mesh.getNodes()
-    gmsh.write("bgm.vtk")
-    gmsh.write("bgm.stl")
-    gmsh.write("bgm.msh")
+
+    output_folder = "output"
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+    vtk_file = os.path.join(output_folder, "bgm.vtk")
+    msh_file = os.path.join(output_folder, "bgm.msh")
+    gmsh.write(vtk_file)
+    gmsh.write(msh_file)
 
     gmsh.finalize()
 
     return nodeids, coords
 
-def tetraprism_mutable(filepath):
+def tetraprism_mutable(filepath,N,r,h):
     gmsh.initialize()
+
     path = os.path.dirname(os.path.abspath(__file__))
     gmsh.merge(os.path.join(path, filepath))
-
+    
     # 読み込んだ形状を設定した角度で分解
     # forReparametrizationをTrueにしないとメッシングで時間がかかる
     gmsh.model.mesh.classifySurfaces(angle = 40 * np.pi / 180, boundary=True, forReparametrization=True)
     # classifySurfacesとセットで用いる
     gmsh.model.mesh.createGeometry()
 
+    surface_real_wall = []
+    surface_fake_wall = []
+    surface_inlet_outlet = []
+    s_first = gmsh.model.getEntities(2)
+    for i in range(len(s_first)):
+        surface_real_wall.append(s_first[i][1])
     gmsh.model.geo.synchronize()
-    check = gmsh.model.getEntities(2)
-    surfaceAll_id = [e[1] for e in check]
-    print("surfaceAll_id =", surfaceAll_id)
-    surfaceLoop=gmsh.model.geo.addSurfaceLoop(surfaceAll_id)
-    gmsh.model.geo.addVolume([surfaceLoop])
+    gmsh.option.setNumber("Geometry.ExtrudeReturnLateralEntities", 0)
+    # ジオメトリオプションを設定して、押出し操作で lateral entities（側面のエンティティ）を返さないようにする
+
+    # 注意
+    # 境界層の厚さが一枚ごとの厚さではなく、基準線(形状の表面)からの距離
+    # なので、t[i] += t[i - 1]で、その層以下の総和をしている
+    n = np.linspace(1, 1, N) # [1, 1, 1, 1, 1]   (初期値、終値、等分数(初期値、終値を計2点と数えて))
+    t = np.full(N, h) # distance from the reference line  # np.full(N,h)は、要素数Nの配列を用意して、その全てにhを格納する
+    for i in range(0, N):
+        t[i] = t[i] * r ** i
+    for i in range(1, N):
+        t[i] += t[i - 1]
+
+    e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), n, -t, True)
+    top_ent = [s for s in e if s[0] == 2]    
+    for t in top_ent:     
+        surface_fake_wall.append(t[1]) 
+    gmsh.model.geo.synchronize()
+    bnd_ent = gmsh.model.getBoundary(top_ent) 
+    bnd_curv = [c[1] for c in bnd_ent] 
+    closedSurfaceInletOutletInside = gmsh.model.geo.addCurveLoops(bnd_curv)
+    for i in closedSurfaceInletOutletInside:
+        # 上記で作成された輪郭に閉曲面を張る
+        eachClosedSurface = gmsh.model.geo.addPlaneSurface([i])
+        surface_fake_wall.append(eachClosedSurface)    
+        surface_inlet_outlet.append(eachClosedSurface)
+    innerSurfaceLoop = gmsh.model.geo.addSurfaceLoop(surface_fake_wall)
+    gmsh.model.geo.addVolume([innerSurfaceLoop])
     gmsh.model.geo.synchronize()
 
-    gmsh.merge(os.path.join(path,'bgm.pos'))  ## 一瞬消す
-    bg_field = gmsh.model.mesh.field.add("PostView")     ###  **** 1   ###########一瞬消す
-    gmsh.model.mesh.field.setNumber(bg_field, "ViewIndex", 0) ###### *** 2      ###########一瞬消す
-    gmsh.model.mesh.field.setAsBackgroundMesh(bg_field) ######## **** 3       ###########一瞬消す
-    # Apply the view as the current background mesh size field:
+    s_second = gmsh.model.getEntities(2) 
+    surfaceAll = []                         
+    for i in range(len(s_second)):             
+        surfaceAll.append(s_second[i][1])  
+    print("sufaceAll = ",surfaceAll)
+    surface_another = list(set(surfaceAll) - set(surface_real_wall) - set(surface_inlet_outlet))  
+    print("suface_fake_wall = ",surface_fake_wall)
+    print("suface_another = ",surface_another)
+
+    # python set 対称差
+    something = list(set(surface_another) ^ set(surface_fake_wall)) 
+    print("something = ",something)
+
+    gmsh.model.addPhysicalGroup(2, something, 99)
+    gmsh.model.setPhysicalName(2, 99, "SOMETHING") 
+
+    wall = surface_real_wall
+    gmsh.model.addPhysicalGroup(2, wall, 10)
+    gmsh.model.setPhysicalName(2, 10, "WALL")
+
+    volumeAll = gmsh.model.getEntities(3)
+    three_dimension_list = []
+    for i in range(len(volumeAll)):
+        three_dimension_list.append(volumeAll[i][1])
+    gmsh.model.addPhysicalGroup(3, three_dimension_list, 100)
+    gmsh.model.setPhysicalName(3, 100, "INTERNAL")
+
+    gmsh.model.geo.synchronize()
+
+    gmsh.option.setNumber("Mesh.OptimizeThreshold", 0.9)
+    # メッシュのアルゴリズムを設定
+    gmsh.option.setNumber('Mesh.Algorithm', 1)
+    # 最適化を何回繰り返すか->なぜか品質わるくなる
+    gmsh.option.setNumber("Mesh.Optimize", 10)
+    # path = os.path.dirname(os.path.abspath(__file__))
+    gmsh.merge(os.path.join("output",'bgm.pos'))                                    # TODO : OSの違いに対応できているか
+    bg_field = gmsh.model.mesh.field.add("PostView")    
+    gmsh.model.mesh.field.setNumber(bg_field, "ViewIndex", 0) 
+    gmsh.model.mesh.field.setAsBackgroundMesh(bg_field) 
 
     gmsh.model.geo.synchronize()
     # gmsh.option.setNumber('Mesh.Algorithm', 1)
-    gmsh.option.setNumber("Mesh.MeshSizeExtendFromBoundary", 0)       ###  ***** 4
-    gmsh.option.setNumber("Mesh.MeshSizeFromPoints", 0)     ###  ***** 5
+    # gmsh.option.setNumber("Mesh.OptimizeNetgen", 1)
+    gmsh.option.setNumber("Mesh.MeshSizeExtendFromBoundary", 0)      
+    gmsh.option.setNumber("Mesh.MeshSizeFromPoints", 0)     
     gmsh.option.setNumber("Mesh.MeshSizeFromCurvature", 0) 
     gmsh.option.setNumber("Mesh.MshFileVersion", 2.2)
-    # gmsh.option.setNumber("Mesh.OptimizeNetgen", 1)
-
-    gmsh.model.mesh.generate(3)
+    gmsh.model.mesh.generate(3)     
     gmsh.model.mesh.optimize()
-    gmsh.write("tetraprism_mutable.msh")
-    gmsh.write("tetraprism_mutable.vtk")
-    gmsh.write("tetraprism_mutable.stl")
 
-    GUI_setting()
-    gmsh.fltk.run()
+    vtk_file = os.path.join("output", "tetraprism_mutable.vtk")
+    msh_file = os.path.join("output", "tetraprism_mutable.msh")
+    stl_file = os.path.join("output", "tetraprism_mutable.stl")
+    gmsh.write(vtk_file)
+    gmsh.write(msh_file)
+    gmsh.write(stl_file)
+    print("finish meshing")
+
+    # GUI_setting()
+    # gmsh.fltk.run()
     
     gmsh.finalize()
+
+def surfacemesh(filepath_stl):
+    gmsh.initialize()
+
+    path = os.path.dirname(os.path.abspath(__file__))
+    gmsh.merge(os.path.join(path, filepath_stl))
+
+    # forReparametrizationをTrueにしないとメッシングで時間がかかる
+    gmsh.model.mesh.classifySurfaces(angle = 40 * np.pi / 180, boundary=True, forReparametrization=True)
+    # classifySurfacesとセットで用いる
+    gmsh.model.mesh.createGeometry()
+    gmsh.model.geo.synchronize()
+
+    gmsh.option.setNumber("Mesh.OptimizeThreshold", 0.9)
+    # メッシュのアルゴリズムを設定
+    gmsh.option.setNumber('Mesh.Algorithm', 1)
+    # 最適化を何回繰り返すか->なぜか品質わるくなる
+    gmsh.option.setNumber("Mesh.Optimize", 10)
+    # path = os.path.dirname(os.path.abspath(__file__))
+    gmsh.merge(os.path.join("output",'bgm.pos'))                    # TODO : OSの違いに対応できているか
+    bg_field = gmsh.model.mesh.field.add("PostView")    
+    gmsh.model.mesh.field.setNumber(bg_field, "ViewIndex", 0) 
+    gmsh.model.mesh.field.setAsBackgroundMesh(bg_field) 
+
+    gmsh.model.geo.synchronize()
+
+    gmsh.option.setNumber("Mesh.MeshSizeExtendFromBoundary", 0)      
+    gmsh.option.setNumber("Mesh.MeshSizeFromPoints", 0)     
+    gmsh.option.setNumber("Mesh.MeshSizeFromCurvature", 0)
+
+    gmsh.model.mesh.generate(2)
+    gmsh.model.mesh.optimize()
+    output_folder = "output"
+    vtk_file = os.path.join(output_folder, "surfacemesh.vtk")
+    stl_file = os.path.join(output_folder, "surfacemesh.stl")
+    gmsh.write(vtk_file)
+    gmsh.write(stl_file)
 
 def GUI_setting():
     # 1がON/0がOFF

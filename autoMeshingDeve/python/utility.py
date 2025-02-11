@@ -30,7 +30,6 @@ def calculate_PH_length(P,A,B):
     vector_PH = vector_AH - vector_AP
     return(np.linalg.norm(vector_PH))
 
-
 # gmsh.model.mesh.getNodes() の1つめの返り値は、得られた全Nodeのid のリスト。
 # 2つめの返り値は、得られる全Nodeのx,y,z座標成分をまとめたリスト。これらをnodeごとの情報に整理する
 def coords_to_nodes(nodeids, coords, nodes_any):
