@@ -1,7 +1,6 @@
 import mygmsh
 import node 
 import myio
-import utility
 import os
 
 # parameter for tetraprism
@@ -27,10 +26,9 @@ filepath_edgeradii = os.path.join("input", "radius.txt")  # TODO : radius.txtを
 nodeids, coords = mygmsh.generate_bgm(meshsize,filepath_stl)
 
 # スカラー値(半径)を backgroundmesh にセットし、bgm.posとして出力
-nodes_centerline = node.NodesCenterline()
-myio.read_txt_centerline(nodes_centerline,filepath_centerline)
+nodes_centerline, node_centerline_dict = myio.read_txt_centerline(filepath_centerline)
 nodes_any = node.NodesAny()
-utility.coords_to_nodes(nodeids,coords,nodes_any)
+node.coords_to_nodes(nodeids,coords,nodes_any)
 edgeradii = myio.read_txt_edgeradii(filepath_edgeradii)   
 nodeany_dict={}
 for node_any in nodes_any.nodes_any:
@@ -46,4 +44,10 @@ myio.write_pos_bgm(tetra_list,nodeany_dict)
 mygmsh.tetraprism_mutable(filepath_stl,N,r,h)
 
 # bgm.posを参照し、表面メッシュが非一様なstlをVTK形式で出力
-mygmsh.surfacemesh(filepath_stl)
+filepath_vtk = mygmsh.surfacemesh(filepath_stl)
+surfacenodes,surfacetriangles = myio.read_vtk_outersurface(filepath_vtk)
+for surfacenode in surfacenodes.nodes_any:
+    surfacenode.find_closest_centerlinenode(nodes_centerline.nodes_centerline)
+for surfacetriangle in surfacetriangles.triangles:
+    surfacetriangle.calc_unitnormal(node_centerline_dict)
+print("info_main    :surfacetriangle unitnormal_out sample is",surfacetriangles.triangles[10].unitnormal_out)

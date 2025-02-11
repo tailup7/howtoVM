@@ -1,5 +1,22 @@
 import utility
 import numpy as np
+import sys
+
+# gmsh.model.mesh.getNodes() の1つめの返り値は、得られた全Nodeのid のリスト。
+# 2つめの返り値は、得られる全Nodeのx,y,z座標成分をまとめたリスト。これらをnodeごとの情報に整理する
+def coords_to_nodes(nodeids, coords, nodes_any):
+    if len(coords)%3!=0:
+        print("mylib_info   : coords_to_nodes error.")
+        sys.exit()
+    else:
+        for i in range(len(nodeids)):
+            x = coords[3*i]
+            y = coords[3*i+1]
+            z = coords[3*i+2]
+            id = nodeids[i]
+            node_any = NodeAny(id,x,y,z)
+            nodes_any.append(node_any)
+    print(f"info_utility   : node count after postprocess gmsh is {len(nodes_any.nodes_any)}")
 
 class NodeCenterline:
     def __init__(self,id,x,y,z):

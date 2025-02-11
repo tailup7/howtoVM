@@ -213,6 +213,8 @@ def surfacemesh(filepath_stl):
     gmsh.write(vtk_file)
     gmsh.write(stl_file)
 
+    return vtk_file
+
 def GUI_setting():
     # 1がON/0がOFF
     # 2次元メッシュの可視化ON/OFF
