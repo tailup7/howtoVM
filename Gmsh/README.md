@@ -20,5 +20,5 @@ Gmsh (https://gmsh.info/doc/texinfo/gmsh.html) はフリーのメッシュ生成
 上にもデータとコードを置いてある。簡単なのでローカルにコピーして試してみてほしい (pythonが使えてパスを通していれば、「pip install gmsh」→「python aneurysm.py」だけで実行できるはず...)。
 
 
-# OpenFOAMへの対応
+## OpenFOAMへの対応
 数値流体解析のためのオープンソースソフトウェアとして広く用いられているOpenFOAMは、ユーザ側が用意した形状を計算領域としたい場合には、その形状データをfluent形式(Ansys社が提供している形式)かgmsh形式で用意し、それをOpenFOAMで読める形式に変換することで可能になる。つまり、gmshのファイル形式(*msh)はOpenFOAMに対応している。(*.msh)ファイルをテキストエディタで開くと分かるが、vtkと似た形式で記述されているが、vtkよりも読みやすい。一方でvtk形式はOpenFOAM側が対応していないため、数値計算したい形状データがvtk形式の場合、一度gmsh形式に変換してからOpenFOAMに読ませるというやり方が一般的。
