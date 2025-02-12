@@ -11,3 +11,5 @@ boundarylayer_ratio = 0.15
 
 inlet_point=None  # myio.read_txt_centerline
 outlet_point=None
+inlet_radius=None # myio.read_txt_edgeradii
+outlet_radius=None

@@ -103,4 +103,5 @@ for surfacetriangle in surfacetriangles.triangles:
 
 print("info_main    :surfacetriangle unitnormal_out sample is",surfacetriangles.triangles[10].unitnormal_out)
 
-myio.write_stl_mostinnersurface(mostinnersurfacetriangles)
+filepath_stl = myio.write_stl_mostinnersurface(mostinnersurfacetriangles)
+mygmsh.make_innermesh(filepath_stl)

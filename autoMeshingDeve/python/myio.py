@@ -47,6 +47,8 @@ def read_txt_edgeradii(filepath):
         line = line.strip()
         if line and not line.startswith('#'):
             edgeradii.append(float(line))
+    config.inlet_radius = edgeradii[0]
+    config.outlet_radius = edgeradii[-1]
     print(f"info_myio    : num of edges is {len(edgeradii)}")
     return edgeradii
 
@@ -151,3 +153,4 @@ def write_stl_mostinnersurface(triangle_list):
             f.write("    endloop\n")
             f.write("  endfacet\n")
         f.write("endsolid model\n")
+    return filepath
