@@ -57,7 +57,6 @@ for surfacenode in surfacenodes.nodes_any:
     surfacenode_dict[surfacenode.id] = surfacenode
 
 # 一番内側の層を作る
-num_of_nodes=0
 temp = set()
 mostinnersurfacenode_dict={}
 for surfacetriangle in surfacetriangles.triangles:
@@ -77,10 +76,9 @@ for surfacetriangle in surfacetriangles.triangles:
             mostinnersurfacenode = node.NodeAny(onenode.id, x, y, z)
             mostinnersurfacenode_dict[onenode.id] = mostinnersurfacenode
             temp.add(onenode.id)
-            num_of_nodes += 1
-print("num of mostinnersurface nodes =",num_of_nodes)
+
 mostinnersurfacenodes=[]
-for i in range(num_of_nodes):
+for i in range(config.num_of_surfacenodes):
     mostinnersurfacenode_dict[i].x = surfacenode_dict[i].x + mostinnersurfacenode_dict[i].x/mostinnersurfacenode_dict[i].sumcountor
     mostinnersurfacenode_dict[i].y = surfacenode_dict[i].y + mostinnersurfacenode_dict[i].y/mostinnersurfacenode_dict[i].sumcountor
     mostinnersurfacenode_dict[i].z = surfacenode_dict[i].z + mostinnersurfacenode_dict[i].z/mostinnersurfacenode_dict[i].sumcountor
@@ -101,7 +99,7 @@ for surfacetriangle in surfacetriangles.triangles:
     mostinnersurfacetriangle_dict[surfacetriangle.id] = mostinnersurfacetriangle
     mostinnersurfacetriangles.append(mostinnersurfacetriangle)
 
-print("info_main    :surfacetriangle unitnormal_out sample is",surfacetriangles.triangles[10].unitnormal_out)
-
 filepath_stl = myio.write_stl_mostinnersurface(mostinnersurfacetriangles)
-mygmsh.make_innermesh(filepath_stl)
+filepath_msh = mygmsh.make_innermesh(filepath_stl)
+
+nodes_innermesh, node_innermesh_dict, triangles_innerwall, triangle_innerwall_dict = myio.read_msh_innermesh(filepath_msh)

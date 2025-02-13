@@ -48,6 +48,7 @@ class NodeAny:
         self.scalar_forbgm = None
         self.scalar_forlayer=None
         self.sumcountor = 1 
+        self.on_boundaryedge=False
 
     def __str__(self):
         return f"NodeAny(id={self.id}, x={self.x}, y={self.y}, z={self.z})"

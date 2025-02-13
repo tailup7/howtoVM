@@ -138,6 +138,7 @@ def read_vtk_outersurface(filepath_vtk):
                 triangle_id += 1
     print("info_myio    : num of outersurface points is ",node_id)
     print("info_myio    : num of outersurface triangles is ",triangle_id)
+    config.num_of_surfacenodes=node_id
     return surfacenodes,surfacetriangles
 
 def write_stl_mostinnersurface(triangle_list):
@@ -154,3 +155,105 @@ def write_stl_mostinnersurface(triangle_list):
             f.write("  endfacet\n")
         f.write("endsolid model\n")
     return filepath
+
+def read_msh_innermesh(filepath):
+
+    nodes_innermesh = []
+    triangles_innerwall=[]
+    triangles_inlet=[]
+    triangles_outlet=[]
+    node_innermesh_dict={}
+    triangle_innerwall_dict={}  
+    triangle_inlet_dict={}   ###### 不要かも
+    triangle_outlet_dict={}  ######
+
+    with open(filepath, "r") as file:
+        lines = file.readlines()
+
+    node_section = False
+    skip_next_line = False  
+    element_section = False
+
+    for i, line in enumerate(lines):
+        line = line.strip()
+
+        if line.startswith("$Nodes"):
+            node_section = True
+            skip_next_line = True 
+            continue
+
+        if skip_next_line:
+            skip_next_line = False  
+            continue
+
+        if line.startswith("$EndNodes"):
+            node_section = False
+            continue
+
+        if node_section:
+            parts = line.split()
+            if len(parts) < 4:
+                continue  
+            
+            node_id = int(parts[0])
+            x, y, z = map(float, parts[1:4])
+            node_innermesh = node.NodeAny(node_id, x, y, z)
+            node_innermesh_dict[node_id]=node_innermesh
+            nodes_innermesh.append(node_innermesh)
+
+        if line.startswith("$Elements"):
+            element_section = True
+            skip_next_line = True  
+            continue
+        if skip_next_line:
+            skip_next_line = False
+            continue
+        if line.startswith("$EndElements"):
+            element_section = False
+            continue
+
+        if element_section:
+            parts = line.split()
+            if len(parts) < 5:
+                continue 
+
+            elem_id = int(parts[0])  # 要素ID
+            elem_type = int(parts[1])  # 要素のタイプ
+            physical_group = int(parts[3])  # 物理グループ（4列目）
+
+            nodesid_composing_innerwalltriangle=set()
+            nodesid_composing_inlettriangle=set()
+            nodesid_composing_outlettriangle=set()
+
+            if  elem_type == 2: 
+                node0 = node_innermesh_dict[int(parts[-3])]
+                node1 = node_innermesh_dict[int(parts[-2])]
+                node2 = node_innermesh_dict[int(parts[-1])]
+
+                if physical_group == 99 :
+                    triangle_innerwall = cell.Triangle(elem_id, node0, node1, node2)
+                    triangle_innerwall_dict[elem_id] = triangle_innerwall
+                    triangles_innerwall.append(triangle_innerwall)
+                    nodesid_composing_innerwalltriangle.update(map(int, parts[-3:]))
+
+                elif physical_group == 20:
+                    triangle_inlet = cell.Triangle(elem_id, node0, node1, node2)
+                    triangle_inlet_dict[elem_id] = triangle_inlet
+                    triangles_inlet.append(triangle_inlet)     ####################### 不要かも
+                    nodesid_composing_inlettriangle.update(map(int, parts[-3:])) ##########
+
+                elif physical_group == 30:
+                    triangle_outlet = cell.Triangle(elem_id, node0, node1, node2)
+                    triangle_outlet_dict[elem_id] = triangle_outlet
+                    triangles_outlet.append(triangle_outlet)           ###############
+                    nodesid_composing_outlettriangle.update(map(int, parts[-3:])) #########
+        
+    # 99(innerwall)と20or30(端面)を構成するNodeはboundaryNodeとして抽出する
+    nodesid_on_inlet_boundaryedge = nodesid_composing_innerwalltriangle & nodesid_composing_inlettriangle
+    nodesid_on_outlet_boundaryedge= nodesid_composing_innerwalltriangle & nodesid_composing_outlettriangle
+    for nodeid in nodesid_on_inlet_boundaryedge:
+        node_innermesh_dict[nodeid].on_boundaryedge = True
+    for nodeid in nodesid_on_outlet_boundaryedge:
+        node_innermesh_dict[nodeid].on_boundaryedge = True
+
+    return nodes_innermesh, node_innermesh_dict, triangles_innerwall, triangle_innerwall_dict
