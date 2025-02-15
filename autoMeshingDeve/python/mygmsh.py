@@ -335,7 +335,7 @@ def make_innermesh(filepath_stl):
     gmsh.write(msh_file)
 
     GUI_setting()
-    gmsh.fltk.run()
+    # gmsh.fltk.run()
     gmsh.finalize()
     return msh_file
 

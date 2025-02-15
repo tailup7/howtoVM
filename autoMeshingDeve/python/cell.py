@@ -34,3 +34,26 @@ class Triangles:
         self.triangles=[]
     def append(self,triangle):
         self.triangles.append(triangle)
+
+class Quad:
+    def __init__(self,id0,id1,id2,id3):
+        self.id0=id0
+        self.id1=id1
+        self.id2=id2
+        self.id3=id3
+
+class Tetra:
+    def __init__(self,id0,id1,id2,id3):
+        self.id0=id0
+        self.id1=id1
+        self.id2=id2
+        self.id3=id3
+
+class Prism:
+    def __init__(self,id0,id1,id2,id3,id4,id5):
+        self.id0=id0
+        self.id1=id1
+        self.id2=id2
+        self.id3=id3
+        self.id4=id4
+        self.id5=id5
