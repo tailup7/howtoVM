@@ -1,10 +1,8 @@
 # fillHolesとは
 VTKが提供する、三次元形状の表面で穴が開いている箇所を三角形パッチで埋める処理をするメソッド。ちなみにvmtk(Vascular Modelling Toolkit)でも全く同じ事が出来て、
-<br>
-<br>
+```
 vmtksurfacecapper -ifile C:/.../inputFilename.stl -ofile C:/.../oututFilename.stl 
-<br>
-<br>
+```
 コマンドを実行すると、同じように三角形パッチが追加された出力データが得られる。一か所ずつしか穴埋めができないことと、毎回処理後にアプリケーションの応答がなくなるため再起動する必要がある。(vmtkについてはvmtkSetupを参照)
 
 # 背景
