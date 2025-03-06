@@ -5,7 +5,7 @@ This repository is intended to keep a memorandum of the work that was required i
 but they can be used for a wide range of applications as a 3DCG process for tubular geometry. 
 
 <br>
-※ 血管形状モデリングの一番最初の工程で、かつ全工程の中でも重要な位置を占めるのが、医用画像から血管領域を抽出し2D→3Dにする工程ですが、研究室のインハウスソフトウェアを使用していることと、医用画像自体が個人情報とも言えるので、ここでは紹介しません。
+※ 血管形状モデリングの一番最初の工程で、かつ全工程の中でも重要な位置を占めるのが、医用画像から血管領域を抽出し2D→3Dにする工程(セグメンテーション)ですが、研究室のインハウスソフトウェアを使用していることと、医用画像自体が個人情報とも言えるので、ここでは紹介しません。3Dスライサーなどのフリーソフトでもセグメンテーションできます。
 
 ## 使用している環境
 * OS : Windows 11 
