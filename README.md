@@ -14,12 +14,12 @@ but they can be used for a wide range of applications as a 3DCG process for tubu
 
 ### あると便利なもの
 * paraview (ほぼすべてのファイル形式を可視化できる)
-* meshmixer (stlファイルをすぐ可視化できる & スムージングや再メッシュ機能があって便利)
+* meshmixer (stlファイルをすぐ可視化できる & スムージングや再メッシュ機能もあって便利)
 
 ### 紹介しているソフトウェア・ライブラリ
-* vtk examples (Kitwareが提供する、モデリング・可視化に関するライブラリ。C++やpython, javaなどの主要言語のAPIを提供している。)
+* vtk-examples (Kitwareが提供する、モデリング・可視化に関するライブラリ。C++やpython, javaなどの主要言語のAPIを提供している。)
 * vmtk 1.4.0 (Vascular Modeling Toolkit の略。VTKから派生したもの。C++, python のAPIを提供している。CUI機能を提供しておりCUIで利用するのが便利かも)
-* Gmsh-4.13 (高機能だがフリーのメッシュ生成ソフトウェア。C++やpythonなどの主要言語のAPIを提供している。)
+* Gmsh-4.13 (フリーのメッシュ生成ソフトウェア。C++やpythonなどの主要言語のAPIを提供している。)
 
 ## 各ディレクトリについて
  + Gmsh   --------------- Gmsh の簡単な紹介。
