@@ -1,4 +1,4 @@
-# vmtkを使えるようになるためのリポジトリ
+# vmtkを利用するための環境構築
 http://www.vmtk.org/index.html
 
 ## vmtk とは
