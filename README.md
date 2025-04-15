@@ -1,11 +1,5 @@
 # 概要
-血管形状のモデリングの際に必要となった作業や処理について、覚書として残しておくためのリポジトリです。基本的に血流解析の前処理としての位置づけですが、3D形状処理として、血管以外、流体解析以外で使える部分もあると思います。<br>
-<br>
-This repository is intended to keep a memorandum of the work that was required in Vascular Modeling. Basically, methods in this repository are intended as pre-processing for blood flow analysis,  
-but they can be used for a wide range of applications as a 3DCG process for tubular geometry. 
-
-<br>
-※ 血管形状モデリングの一番最初の工程で、かつ全工程の中でも重要な位置を占めるのが、医用画像から血管領域を抽出し2D→3Dにする工程(セグメンテーション)ですが、研究室のインハウスソフトウェアを使用していることと、医用画像自体が個人情報とも言えるので、ここでは紹介しません。3Dスライサーなどのフリーソフトでもセグメンテーションできます。
+血管形状のモデリングの際に必要となった処理や環境構築について、覚書として残しておくためのリポジトリ
 
 ## 使用している環境
 * OS : Windows 11 
