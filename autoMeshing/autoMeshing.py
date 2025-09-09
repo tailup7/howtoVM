@@ -1,34 +1,25 @@
-import gmsh
-import math
 import os
 import sys
 import numpy as np
 import tkinter as tk
 from tkinter import filedialog
+import gmsh
+import vtk
 
-gmsh.initialize(sys.argv)
 # ===========================================================================================================
 # Gmshを利用し、任意のチューブ形状に対してテトラ・プリズム複合メッシュを作成するpythonコード
 # 入力STLは端面が開放されているものを前提にしている
 # 形状はメッシングに際して領域分けが必要ないもの、つまり極端に細くなったり太くなったりする部分がないものを前提としている
+# z座標が大きい(上側にある)面がINLET, 小さい(下側にある)面がOUTLETになる。(コード実行中に逆にできる)
 # ===========================================================================================================
 
-# **********************************************************************************************************
+# *************************************************************************************
 # パラメータ。書き換えるのはここだけ。
 meshSize = 0.5 # mesh size (Gmshに単位は無いので、STLの座標スケールから適切に設定する)
 N = 6          # 境界層の層数
 r = 1.2        # 境界層の厚みの増加率
 h = 0.05       # 境界層の最初の層(一番外側)の厚さ
-
-# 流入面と流出面の大体の中心座標 (中心線情報があれば、その始点・終点の座標を使うのがシンプル)。INLET及びOUTLETを割り当てるときに参照する。
-
-inletSurface_center  = np.array([ 111.748276, 251.652390, 204.930370 ])
-
-outletSurface_center = np.array([ 108.240890, 288.927400, 110.285000 ])
-
-# 流入面や流出面の半径程度に設定。流入面(流出面)の重心からこの距離以内に重心がある2次元エンティティは、流入面(流出面)とみなしてINLET(OUTLET)とする。
-judgeDistance = 4.0   
-# **********************************************************************************************************
+# *************************************************************************************
 
 # ===============================================
 # グローバル変数
@@ -50,7 +41,7 @@ def OptionSetting():
     # 0次元のEntityの可視化ON?OFF
     gmsh.option.setNumber("Geometry.PointLabels", 1)
     # メッシュの線の太さを指定
-    gmsh.option.setNumber("Mesh.LineWidth", 4)
+    gmsh.option.setNumber("Mesh.LineWidth", 3)
     # gmshではマウスのホイールのズーンオン/ズームオフがparaviewとは逆なので、paraviewと一緒にする
     gmsh.option.setNumber("General.MouseInvertZoom", 1)
     # モデルのサイズが簡単に確認できるように、モデルを囲む直方体メモリを表示
@@ -65,23 +56,25 @@ def OptionSetting():
     gmsh.option.setNumber("General.Terminal", 1)
 # ===============================================
 
-
-# ===============================================
-# stlの読み込み
-def ImportStl():
+def GetSTLfilepath():
     root = tk.Tk()
     root.withdraw() 
     filepath = filedialog.askopenfilename(title="Select an STL file", filetypes=[("STL Files", "*.stl")])
     if not filepath:
         print("STL file was not selected.")
         sys.exit()
+    return filepath
+
+# ===============================================
+# stlの読み込み
+def ImportStl(filepath):
     # stlの読み込み
     gmsh.merge(filepath)
 
     # 読み込んだ形状を設定した角度で分解
     # forReparametrizationをTrueにしないとメッシングで時間がかかる
     # 法線ベクトル同士のなす角が40°を超える三角形パッチは別の面とみなす
-    gmsh.model.mesh.classifySurfaces(angle = 40 * math.pi / 180, boundary=True, forReparametrization=True)
+    gmsh.model.mesh.classifySurfaces(angle = 40 * np.pi / 180, boundary=True, forReparametrization=True)
     # classifySurfacesとセットで用いる
     gmsh.model.mesh.createGeometry()
 
@@ -92,7 +85,6 @@ def ImportStl():
         surface_real_wall.append(s_first[i][1])
 
     Syncronize()
-    return filepath
 # ===============================================
 
 
@@ -177,9 +169,20 @@ def Meshing():
     print("finish meshing")
 # ===============================================
 
+
+# INLET と OUTLET の Naming を逆にしたいか聞く ==================================================
+def askRename(inletSurface_center, outletSurface_center):
+    print(f"Now, INLET  surface position is around {inletSurface_center}, \n")
+    print(f"     OUTLET surface position is around {outletSurface_center}")
+    ans = input("Do you want to reverse INLET OUTLET？ [y/n]: ").strip().lower()
+    wantToReverse = ans in ("y", "yes")
+    return wantToReverse
+# ============================================================================================
+
+
 # ===============================================
 # OpenFOAMで境界条件を設定するために、モデルの面や壁に体積に名前をつける
-def NamingBoundary():
+def NamingBoundary(inletSurface_center, judgeDistance_inlet, outletSurface_center, judgeDistance_outlet):
     s_second = gmsh.model.getEntities(2)
     surfaceAll = []
     for i in range(len(s_second)):
@@ -210,11 +213,11 @@ def NamingBoundary():
         center_y=float(center_y/len(node_tags))
         center_z=float(center_z/len(node_tags))
         center=[center_x,center_y,center_z]
-        distance_fromInlet = np.linalg.norm(inletSurface_center-np.array(center))
-        distance_fromOutlet = np.linalg.norm(outletSurface_center-np.array(center))
-        if distance_fromInlet < judgeDistance:
+        distance_fromInlet = np.linalg.norm(inletSurface_center - np.array(center))
+        distance_fromOutlet = np.linalg.norm(outletSurface_center - np.array(center))
+        if distance_fromInlet < judgeDistance_inlet:
             inletList.append(something[i])
-        if distance_fromOutlet < judgeDistance:
+        if distance_fromOutlet < judgeDistance_outlet:
             outletList.append(something[i])
     print("INLET entities are ",inletList)
     print("OUTLET entities are ",outletList)
@@ -225,11 +228,17 @@ def NamingBoundary():
         print("please set outletSurface_center correctly.")
         sys.exit()
 
-    gmsh.model.addPhysicalGroup(2, inletList, 20)
-    gmsh.model.setPhysicalName(2, 20, "INLET")
-
-    gmsh.model.addPhysicalGroup(2, outletList, 30)
-    gmsh.model.setPhysicalName(2, 30, "OUTLET")
+    ToF = askRename(inletSurface_center, outletSurface_center)
+    if ToF == False:
+        gmsh.model.addPhysicalGroup(2, inletList, 20)
+        gmsh.model.setPhysicalName(2, 20, "INLET")
+        gmsh.model.addPhysicalGroup(2, outletList, 30)
+        gmsh.model.setPhysicalName(2, 30, "OUTLET")
+    elif ToF == True:
+        gmsh.model.addPhysicalGroup(2, outletList, 20)
+        gmsh.model.setPhysicalName(2, 20, "INLET")
+        gmsh.model.addPhysicalGroup(2, inletList, 30)
+        gmsh.model.setPhysicalName(2, 30, "OUTLET")
 
     wall = surface_real_wall
     gmsh.model.addPhysicalGroup(2, wall, 10)
@@ -248,7 +257,7 @@ def NamingBoundary():
 # ===============================================
 # 完成したメッシュをGUIで確認するため
 # 性能が低いPCで大規模なメッシュを可視化しようとすると重くなるか、最悪クラッシュする
-def ConfirmMesh():
+def VisualizeMesh():
     if "-nopopup" not in sys.argv:
         gmsh.fltk.run()
 # ===============================================
@@ -277,11 +286,102 @@ def Syncronize():
     gmsh.model.geo.synchronize()
 # ===============================================
 
-OptionSetting()
-filepath = ImportStl()
+# ===================================================================================================
+# vtkを使い、穴の開いたチューブから境界線edgeを抽出し、境界面の重心座標、及び最大径を求める関数
+def CalcBoundaryCentroid(filepath):
+    r = vtk.vtkSTLReader()
+    r.SetFileName(filepath)
+    r.Update()
+    cl = vtk.vtkCleanPolyData()
+    cl.SetInputData(r.GetOutput())
+    cl.Update()
+    poly = cl.GetOutput()
+    fe = vtk.vtkFeatureEdges()
+    fe.SetInputData(poly)
+    fe.BoundaryEdgesOn()
+    fe.FeatureEdgesOff()
+    fe.ManifoldEdgesOff()
+    fe.NonManifoldEdgesOff()
+    fe.Update()
+    st = vtk.vtkStripper() 
+    st.SetInputData(fe.GetOutput()) 
+    st.Update()
+    pd = st.GetOutput()
+    lines, pts = pd.GetLines(), pd.GetPoints()
+    loops = []
+    if not pts or not lines: 
+        return loops
+    ids = vtk.vtkIdList()
+    lines.InitTraversal()
+    while lines.GetNextCell(ids):
+        n = ids.GetNumberOfIds()
+        if n < 3: continue
+        NodesOnBoundaryLoop = np.array([pts.GetPoint(ids.GetId(i)) for i in range(n)], float)
+        # stripperの結果が開いていることもあるので、必要なら明示的に閉じる
+        if np.linalg.norm(NodesOnBoundaryLoop[0] - NodesOnBoundaryLoop[-1]) > 1e-12:  
+            NodesOnBoundaryLoop = np.vstack([NodesOnBoundaryLoop, NodesOnBoundaryLoop[0]])
+        loops.append(NodesOnBoundaryLoop)    # 2つある想定
+    if len(loops) == 0:
+        print("There is no boundary loop（Input mesh maybe closed surface）."); return
+    if len(loops) >= 3:
+        print("There is more than 3 boundary loops（Input mesh file maybe broken）."); return
+    for i, nbl in enumerate(loops, 1):    # nbl ... NodesOnBoundaryLoop
+        Q = nbl[:-1]
+        ctr = Q.mean(0)
+        Q0 = Q - ctr
+        _,_,Vt = np.linalg.svd(Q0, full_matrices=False) 
+        ux, uy = Vt[0], Vt[1]
+        uv = np.c_[Q0@ux, Q0@uy]
+        uv = np.vstack([uv, uv[0]])
+        area = 0.0 
+        acc = np.zeros(2)
+        # 退化三角形を避ける
+        M = len(uv)
+        for j in range(1, M-2):  
+            p0, p1, p2 = uv[0], uv[j], uv[j+1]
+            A = 0.5 * ((p1[0]-p0[0])*(p2[1]-p0[1]) - (p2[0]-p0[0])*(p1[1]-p0[1]))
+            area += A
+            acc += A * (p0 + p1 + p2) / 3.0
+        # 面積が小さいときは “線重心” にフォールバック
+        if abs(area) < 1e-12:
+            a = nbl[:-1]; b = nbl[1:]
+            w = np.linalg.norm(b - a, axis=1)
+            L = w.sum()
+            if L < 1e-12:
+                face_centroid = nbl.mean(axis=0)
+            mid = 0.5 * (a + b)
+            face_centroid = (mid * w[:, None]).sum(axis=0) / L
+        c2 = acc / area
+        face_centroid = ctr + c2[0]*ux + c2[1]*uy
+        Q = nbl[:-1]
+        c = np.asarray(face_centroid)  # 念のため
+        d = np.linalg.norm(Q - c[None, :], axis=1)
+        k = int(np.argmax(d))
+        rmax = float(d[k])
+
+        if i == 1:
+            inletSurface_center = face_centroid
+            judgeDistance_inlet = rmax
+        else:
+            outletSurface_center = face_centroid
+            judgeDistance_outlet = rmax
+    # z座標が上の方を端面をinletにする
+    if inletSurface_center[2] >= outletSurface_center[2]:
+        return inletSurface_center, judgeDistance_inlet, outletSurface_center, judgeDistance_outlet
+    else:
+        return outletSurface_center, judgeDistance_outlet, inletSurface_center, judgeDistance_inlet,
+# ========================================================================================================
+
+
+#########    main    #########
+gmsh.initialize(sys.argv)
+filepath = GetSTLfilepath()
+ImportStl(filepath)
 ShapeCreation()
 Meshing()
-NamingBoundary()
+inletSurface_center, judgeDistance_inlet, outletSurface_center, judgeDistance_outlet = CalcBoundaryCentroid(filepath)
+NamingBoundary(inletSurface_center, judgeDistance_inlet, outletSurface_center, judgeDistance_outlet) 
 OutputMshVtk(filepath)
-ConfirmMesh()
+OptionSetting()
+VisualizeMesh()
 gmsh.finalize()
