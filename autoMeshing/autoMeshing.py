@@ -78,6 +78,13 @@ def ImportStl(filepath):
     # classifySurfacesとセットで用いる
     gmsh.model.mesh.createGeometry()
 
+    # *********************************************************************************************
+    # !!! 読み込んだSTLの表面をmeshSize で定義した大きさで再メッシュ → 押し出しでプリズム生成、ではなく  
+    # !!! 読み込んだSTLの表面メッシュのまま、押し出しでプリズム生成、 をしたい場合は、                  
+    # !!! 上の2行, classifySurface と createGeometry をコメントアウトし、
+    # !!! 下の1行, createTopology のコメントアウトを外す。(他の部分はそのままでOK)
+    # *********************************************************************************************
+
     # gmsh.model.mesh.createTopology()
 
     s_first = gmsh.model.getEntities(2)
@@ -288,6 +295,8 @@ def Syncronize():
 
 # ===================================================================================================
 # vtkを使い、穴の開いたチューブから境界線edgeを抽出し、境界面の重心座標、及び最大径を求める関数
+# ここの処理は, inlet と outlet の面を区別し、また、inlet 及び outlet を構成するentityを 過不足なく
+# グループ化するために必要。
 def CalcBoundaryCentroid(filepath):
     r = vtk.vtkSTLReader()
     r.SetFileName(filepath)
